@@ -1,0 +1,6 @@
+@VideoShopRentalRevision_HostAddress = http://localhost:5186
+
+GET {{VideoShopRentalRevision_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
