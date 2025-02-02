@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoShopRentalRevision.Data;
 
@@ -11,9 +12,11 @@ using VideoShopRentalRevision.Data;
 namespace VideoShopRentalRevision.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250202102058_updateTables")]
+    partial class updateTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace VideoShopRentalRevision.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MovieRental", b =>
-                {
-                    b.Property<int>("MoviesMovieId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RentalsRentalId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MoviesMovieId", "RentalsRentalId");
-
-                    b.HasIndex("RentalsRentalId");
-
-                    b.ToTable("MovieRental");
-                });
 
             modelBuilder.Entity("VideoShopRentalRevision.Models.Customer", b =>
                 {
@@ -119,21 +107,6 @@ namespace VideoShopRentalRevision.Migrations
                     b.HasIndex("RentalId");
 
                     b.ToTable("RentalDetails");
-                });
-
-            modelBuilder.Entity("MovieRental", b =>
-                {
-                    b.HasOne("VideoShopRentalRevision.Models.Movie", null)
-                        .WithMany()
-                        .HasForeignKey("MoviesMovieId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("VideoShopRentalRevision.Models.Rental", null)
-                        .WithMany()
-                        .HasForeignKey("RentalsRentalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("VideoShopRentalRevision.Models.Rental", b =>

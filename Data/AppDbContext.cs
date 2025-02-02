@@ -11,37 +11,48 @@ namespace VideoShopRentalRevision.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Rental> Rentals { get; set; }
 
+        public DbSet<RentalDetail> RentalDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Rental>(entity =>
-            {
-                entity.HasKey(a => a.RentalId);
-                entity.Property(c => c.TotalCost)
-                    .HasColumnType("decimal(18,2)");
-
-            });
-
             modelBuilder.Entity<Customer>(entity =>
             {
                 entity.HasKey(a => a.CustomerId);
 
                 entity.HasMany(a => a.Rentals)
-                    .WithOne(c => c.Customer)
-                    .HasForeignKey(c => c.CustomerId)
+                    .WithOne(r => r.Customer)
+                    .HasForeignKey(r => r.CustomerId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
 
+            modelBuilder.Entity<Rental>(entity =>
+            {
+                entity.HasKey(r => r.RentalId);
+
+                entity.HasMany(r => r.RentalDetails)
+                    .WithOne(d => d.Rental)
+                    .HasForeignKey(d => d.RentalId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Movie>(entity =>
             {
-                entity.HasKey(a => a.MovieId);
-                entity.Property(p => p.Price)
+                entity.HasKey(m => m.MovieId);
+
+                entity.Property(m => m.Price)
                     .HasColumnType("decimal(18,2)");
 
-                entity.HasMany(p => p.Rentals)
-                    .WithOne(m => m.Movie)
-                    .HasForeignKey(f => f.MovieId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                entity.HasMany(m => m.RentalDetails)
+                    .WithOne(d => d.Movie)
+                    .HasForeignKey(d => d.MovieId)
+                    .OnDelete(DeleteBehavior.Restrict);
+            });
+
+            modelBuilder.Entity<RentalDetail>(entity =>
+            {
+                entity.HasKey(d => d.RentalDetailsId);
+
+                entity.Property(d => d.Quantity).IsRequired();
             });
         }
     }
