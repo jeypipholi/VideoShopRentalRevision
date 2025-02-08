@@ -20,9 +20,7 @@ namespace VideoShopRentalRevision.Data
                 entity.HasKey(a => a.CustomerId);
 
                 entity.HasMany(a => a.Rentals)
-                    .WithOne(r => r.Customer)
-                    .HasForeignKey(r => r.CustomerId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                    .WithOne(r => r.Customer);
             });
 
             modelBuilder.Entity<Rental>(entity =>
@@ -31,7 +29,6 @@ namespace VideoShopRentalRevision.Data
 
                 entity.HasMany(r => r.RentalDetails)
                     .WithOne(d => d.Rental)
-                    .HasForeignKey(d => d.RentalId)
                     .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -44,7 +41,6 @@ namespace VideoShopRentalRevision.Data
 
                 entity.HasMany(m => m.RentalDetails)
                     .WithOne(d => d.Movie)
-                    .HasForeignKey(d => d.MovieId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -52,7 +48,13 @@ namespace VideoShopRentalRevision.Data
             {
                 entity.HasKey(d => d.RentalDetailsId);
 
-                entity.Property(d => d.Quantity).IsRequired();
+                entity.HasOne(d => d.Rental)
+                      .WithMany(r => r.RentalDetails)
+                      .HasForeignKey(d => d.RentalId);
+
+                entity.HasOne(m => m.Movie)
+                      .WithMany(r => r.RentalDetails)
+                      .HasForeignKey(i => i.MovieId);
             });
         }
     }

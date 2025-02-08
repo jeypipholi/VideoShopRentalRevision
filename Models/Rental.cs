@@ -7,7 +7,7 @@ namespace VideoShopRentalRevision.Models
 {
     public class Rental
     {
-        [Key]
+      
         public int RentalId { get; set; }
         public DateTime RentalDate { get; set; }
         public int CustomerId { get; set; }

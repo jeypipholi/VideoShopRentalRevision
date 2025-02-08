@@ -56,7 +56,7 @@ namespace VideoShopRentalRevision.Controllers
             dbContext.Entry(movie).State = EntityState.Modified;
             await dbContext.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(movie);
         }
 
         [HttpDelete("{id}")]
@@ -71,7 +71,7 @@ namespace VideoShopRentalRevision.Controllers
 
             dbContext.Movies.Remove(movie);
             dbContext.SaveChanges();
-            return NoContent();
+            return Ok();
 
         }
     }

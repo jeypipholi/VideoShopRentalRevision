@@ -9,6 +9,6 @@ namespace VideoShopRentalRevision.Models
         public Rental? Rental { get; set; }
         public int MovieId { get; set; }
         public Movie? Movie { get; set; }
-        public int Quantity { get; set; }
+        
     }
 }

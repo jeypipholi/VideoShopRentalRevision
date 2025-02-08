@@ -21,9 +21,9 @@ namespace VideoShopRentalRevision.Controllers
         public async Task<ActionResult<IEnumerable<Rental>>> GetAllRentals()
         {
             var rentals = await _dbContext.Rentals
-                .Include(r => r.Customer) // Eager loading of related Customer
-                .Include(r => r.RentalDetails) // Eager loading RentalDetails if needed
-                    .ThenInclude(d => d.Movie) // Include related Movie
+                .Include(r => r.Customer) 
+                .Include(r => r.RentalDetails)
+                    .ThenInclude(d => d.Movie)
                 .ToListAsync();
 
             return Ok(rentals);
@@ -116,7 +116,7 @@ namespace VideoShopRentalRevision.Controllers
                 throw;
             }
 
-            return NoContent();
+            return Ok(rental);
         }
 
         // DELETE: api/Rental/{id}
@@ -133,7 +133,7 @@ namespace VideoShopRentalRevision.Controllers
             _dbContext.Rentals.Remove(rental);
             await _dbContext.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
         private bool RentalExists(int id)
